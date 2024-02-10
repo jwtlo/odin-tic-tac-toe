@@ -1,3 +1,16 @@
+// Factory function for cells
+// Enforced invariant: a cell's value must either by "", "X", or "O"
+const makeCell = () => {
+  let value = "";
+  const getValue = () => value;
+  const setValue = (newValue) => {
+    if (!value && (newValue === "X" || newValue === "O")) value = newValue;
+  }
+  const clearValue = () => value = "";
+
+  return {getValue, setValue, clearValue};
+}
+
 // gameboard object created using IIFE module paradigm
 const Gameboard = (function () {
   const board = [];
@@ -11,6 +24,8 @@ const Gameboard = (function () {
       board.push(row);
     }
   };
+  
+  initializeBoard();
 
   const markBoard = (row, col, mark) => {
     const cell = board[row][col];
@@ -58,21 +73,48 @@ const Gameboard = (function () {
     board.forEach((row) => {
       const rowVals = row.map((cell) => cell.getValue()).join(" | ");
       console.log("\n" + rowVals)
+      console.log("-".repeat(10));
     })
   };
 
-  return {initializeBoard, markBoard, checkWin, clearBoard, logBoard};
+  return {markBoard, checkWin, clearBoard, logBoard};
 }) ();
 
-// Factory function for cells
-// Enforced invariant: a cell's value must either by "", "X", or "O"
-const makeCell = () => {
-  let value = "";
-  const getValue = () => value;
-  const setValue = (newValue) => {
-    if (!value && (newValue === "X" || newValue === "O")) value = newValue;
-  }
-  const clearValue = () => value = "";
+// controller object created using IIFE module paradigm
+const Controller = (function () {
+  // gamestate
+  const board = Gameboard;
+  let turn = "X";
 
-  return {getValue, setValue, clearValue};
-}
+  const nextTurn = () => turn = turn === "X" ? "O" : "X";
+
+  const playTurn = () => {
+    // First, get valid row and column
+    let row = prompt("Which row?");
+    let col = prompt("Which column?");
+
+    board.markBoard(row, col, turn);
+    nextTurn();
+  };
+
+  const startGame = () => {
+    console.log("Let's play Tic-Tac-Toe!")
+
+    let winner;
+    while (!(winner = board.checkWin())) {
+      board.logBoard();
+      playTurn();
+    }
+
+    board.logBoard();
+    console.log("The winner is " + winner);
+    resetGame();
+  };
+
+  const resetGame = () => {
+    board.clearBoard();
+    startGame();
+  };
+
+  return {startGame};
+}) ();
