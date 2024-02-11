@@ -72,3 +72,7 @@ main {
   color:  #F05365;
   color:  #FABC2A;
 }
+
+#end-message {
+  font-size: 2rem;
+}
