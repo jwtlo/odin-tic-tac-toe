@@ -138,6 +138,23 @@ const DOMController = (function () {
   let player1 = "Player 1";
   let player2 = "Player 2";
 
+  const dialog = document.querySelector("dialog");
+  const form = document.querySelector("form");
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let name1 = document.querySelector("#name-1").value;
+    let name2 = document.querySelector("#name-2").value;
+    setPlayers(name1, name2);
+
+   dialog.close();
+  })
+
+  const setPlayers = (name1, name2) => {
+    player1 = name1;
+    player2 = name2;
+  }
+
   const nextTurn = () => turn = turn === "X" ? "O" : "X";
 
   const playTurn = (row, col) => {
@@ -149,13 +166,13 @@ const DOMController = (function () {
     nextTurn();
   };
 
-  const startNewGame = () => {
+  const startGame = () => {
     board.clearBoard();
     turn = "X";
     document.querySelector("#end-message").innerHTML = "";
-
     displayBoard();
     // show dialog, get names
+    setTimeout(dialog.showModal(), 2000);
   }
 
   const endGame = (result, indices) => {
@@ -166,7 +183,7 @@ const DOMController = (function () {
 
     const button = document.createElement("button");
     button.textContent = "Play again?"
-    button.addEventListener("click", startNewGame);
+    button.addEventListener("click", startGame);
 
     endMessage.appendChild(button);
     return;
@@ -208,5 +225,5 @@ const DOMController = (function () {
     }
   }
 
-  return {displayBoard};
+  return {startGame, displayBoard};
 }) ();
