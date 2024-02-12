@@ -1,0 +1,27 @@
+main {
+  display: flex;
+  justify-content: center;
+
+  padding: 10rem;
+}
+
+.button-wrapper {
+  background-color: #c99;
+  padding: 5rem;
+}
+
+button {
+  padding: 1rem;  
+  font-size: 2rem;
+  /* border: 1px solid grey; */
+  
+}
+
+button:active {
+  background-color: #555;
+  color: #F2EDEB;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #F05365;
+  transform: none;
+}
