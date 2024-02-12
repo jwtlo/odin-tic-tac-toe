@@ -90,6 +90,8 @@ const Gameboard = (function () {
   return {board, getBoardValues, markBoard, checkResult, clearBoard, logBoard};
 }) ();
 
+// --------------------------------
+
 // console controller object created using IIFE module paradigm
 const ConsoleController = (function () {
   // gamestate
@@ -117,7 +119,7 @@ const ConsoleController = (function () {
     }
 
     board.logBoard();
-    if (result === "=") console.log("There is a tie!")
+    if (result === "=") console.log("It's a tie!")
     else console.log("The winner is " + result);
     resetGame();
   };
@@ -140,6 +142,7 @@ const DOMController = (function () {
 
   const dialog = document.querySelector("dialog");
   const form = document.querySelector("form");
+  const grid = document.querySelector("#board-grid");
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -155,13 +158,19 @@ const DOMController = (function () {
     player2 = name2;
   }
 
-  const nextTurn = () => turn = turn === "X" ? "O" : "X";
+  const nextTurn = () => {
+    if (turn === "X") {
+      turn = "O";
+      grid.classList.replace("X-turn", "O-turn");
+    } else {
+      turn = turn === "X" ? "O" : "X";
+      grid.classList.replace("O-turn", "X-turn");
+    }
+  }
 
   const playTurn = (row, col) => {
     // Assume row and column are valid
-    // console.log(row, col, turn);
     board.markBoard(row, col, turn);
-    // board.logBoard();
     displayBoard();
     nextTurn();
   };
@@ -169,19 +178,28 @@ const DOMController = (function () {
   const startGame = () => {
     board.clearBoard();
     turn = "X";
+    grid.classList.remove("O-turn");
+    grid.classList.remove("no-turn");
+    grid.classList.add("X-turn");
     document.querySelector("#end-message").innerHTML = "";
     displayBoard();
-    // show dialog, get names
-    setTimeout(dialog.showModal(), 2000);
+    dialog.showModal();
   }
 
   const endGame = (result, indices) => {
+    grid.classList.remove("O-turn");
+    grid.classList.remove("X-turn");
+    grid.classList.add("no-turn");
+    
     const endMessage = document.querySelector("#end-message");
 
     if (result === "-") endMessage.textContent = "There is a tie!"
     else endMessage.textContent = (result === "X" ? player1 : player2) + " wins!"
 
+    
+
     const button = document.createElement("button");
+    button.id = "again-button";
     button.textContent = "Play again?"
     button.addEventListener("click", startGame);
 
@@ -190,7 +208,6 @@ const DOMController = (function () {
   }
 
   const displayBoard = () => {
-    const grid = document.querySelector("#board-grid");
     const values = board.getBoardValues();
     grid.innerHTML = "";
 
@@ -209,12 +226,12 @@ const DOMController = (function () {
             playTurn(Math.floor(i/3), i%3);
           })
         }
-      } else {
-        cellContent.classList.add(value);
-      }
+      } else boardCell.classList.add(value);
 
       // Display cell content
-      cellContent.textContent = value;
+      // cellContent.innerHTML = value;
+      cellContent.innerHTML = 
+      value ? `<img alt="${value}" src="./${value}.svg">` : "";
 
       boardCell.appendChild(cellContent);
       grid.appendChild(boardCell);

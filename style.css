@@ -32,9 +32,10 @@ main {
   position: relative;
   width: clamp(400px, 50%, 600px);
   padding-bottom: clamp(400px, 50%, 600px);
-  margin-bottom: 2rem;
 
   border: 1rem solid #BD93BD;
+  box-shadow: inset 0 0 0 1rem #BD93BD; /* Fill inner border-radius */
+  border-radius: 1rem;
 }
 
 #board-grid {
@@ -51,7 +52,16 @@ main {
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(3, 1fr);
   justify-content: center;
-  gap: 2rem;
+  background-color: white;
+  border-radius: 0.5rem;
+}
+
+#board-grid.X-turn {
+  --turn-color: #F05365;
+}
+
+#board-grid.O-turn {
+  --turn-color: #FABC2A;
 }
 
 .board-cell {
@@ -62,7 +72,111 @@ main {
   justify-content: center;
   align-items: center;
 
-  background-color: #FABC2A; 
+  background-color: #fbfbfb;
+  box-shadow: 0 0 0 2px #ddd;
+}
+
+#board-grid:not(.no-turn) .board-cell:hover:not(.X):not(.O) {
+  box-shadow: 0 0 0 2px #ddd, inset 0 0 10px 5px var(--turn-color);
+}
+
+.board-cell.X {
+  box-shadow: 0 0 0 2px #ddd, inset 0 0 10px 5px #F05365;
+}
+
+.board-cell.O {
+  box-shadow: 0 0 0 2px #ddd, inset 0 0 10px 5px #FABC2A;
+}
+
+.cell-content {
+  display: flex;
+}
+
+#end-message-wrapper {
+  height: 3rem;
+}
+
+#end-message {
+  font-size: 2rem;
+  display: flex;
+  gap: 1rem;
+}
+
+#again-button {
+  padding: 1rem;
+  font-size: 1.5rem;
+  line-height: 0.3rem;
+}
+
+dialog {
+  opacity: 0;
+  transition: opacity 0s; /* This opacity makes closing the modal immediate*/
+  display: block; /* This is what allows the transition to happen for some reason*/
+
+  margin-top: 10rem;
+  padding: 3rem 6rem;
+  font-size: 1.5rem;
+  border: 10px solid #52316a;
+  border-radius: 3px;
+
+  box-shadow: 0 0 0 100vmax #695669DD; /* Replacement for ::backdrop*/
+}
+
+dialog[open] {
+  transition: opacity 1s; /* This opacity applies on showModal()*/
+  opacity: 1;
+  pointer-events: inherit;
+}
+
+h1 {
+  font-size: 2rem
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+}
+
+input {
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  border: 0;
+
+  outline: none;
+}
+
+#name-1 {
+  margin-right: 1rem;
+
+  border-radius: 1rem;
+  box-shadow: 0 0 3px 3px #F05365;
+  transition: box-shadow 0.3s 0s;
+}
+
+#name-1:focus {
+  box-shadow: 0 0 10px 7px #F05365;
+}
+
+#name-2 {
+  border-radius: 1rem;
+  box-shadow: 0 0 3px 3px #FABC2A;
+  transition: box-shadow 0.3s 0s;
+}
+
+#name-2:focus {
+  box-shadow: 0 0 10px 10px #FABC2A;
+}
+
+#start-button {
+  padding: 1rem;  
+  font-size: 1.5rem;
+}
+
+button:active {
+  background-color: #555;
+  color: #F2EDEB;
 }
 
 .colors {
@@ -71,8 +185,4 @@ main {
   color:  #F2EDEB;
   color:  #F05365;
   color:  #FABC2A;
-}
-
-#end-message {
-  font-size: 2rem;
 }

@@ -10,22 +10,23 @@
   <body>
     <dialog>
       <form>
-        <p>Let's play Tic-Tac-Toe!</p>
+        <h1>Let's play Tic-Tac-Toe!</h1>
         <p>What are your names?</p>
-        <div type="inputs">
-          <input type="text" id="name-1" value="Player 1" required />
+        <div id="inputs">
+          <input type="text" id="name-1" value="Player 1" required autofocus />
           <input type="text" id="name-2" value="Player 2" required />
         </div>
-        <button type="submit">Start</button>
+        <button type="submit" id="start-button">Let's Play!</button>
       </form>
     </dialog>
     <main>
       <h1>Tic-Tac-Toe</h1>
-      <p>Let's play Tic-Tac-Toe!</p>
       <section id="board-wrapper">
         <div id="board-grid"></div>
       </section>
-      <p id="end-message"></p>
+      <div id="end-message-wrapper">
+        <p id="end-message"></p>
+      </div>
     </main>
     <script src="./script.js"></script>
   </body>
