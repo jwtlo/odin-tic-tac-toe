@@ -242,5 +242,7 @@ const DOMController = (function () {
     }
   }
 
-  return {startGame, displayBoard};
+  return {startGame};
 }) ();
+
+DOMController.startGame();
